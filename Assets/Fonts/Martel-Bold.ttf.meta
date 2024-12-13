@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 7b9fb6c873e2fed48ac9f8e84f22b846
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Martel
+  fontNames:
+  - Martel
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 021d66473d98be443b9cc25f1af6dcdb, type: 3}
+  - {fileID: 12800000, guid: 0784576fb13f5694ab095c42971f6eeb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
