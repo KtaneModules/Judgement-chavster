@@ -1182,8 +1182,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1982727586675816}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.51000005, z: 0}
-  m_LocalScale: {x: 0.03333335, y: 0.053901438, z: 500.00195}
+  m_LocalPosition: {x: 0.016666658, y: 0.51000005, z: 0}
+  m_LocalScale: {x: 0.022222232, y: 0.05390149, z: 500.00235}
   m_Children: []
   m_Father: {fileID: 4926915078864314}
   m_RootOrder: 0
@@ -1581,7 +1581,7 @@ Transform:
   m_GameObject: {fileID: 1951603430638252}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.02, y: 0.015, z: 0.0255}
-  m_LocalScale: {x: 0.03, y: 0.0025, z: 0.018552402}
+  m_LocalScale: {x: 0.045, y: 0.0025, z: 0.018552402}
   m_Children:
   - {fileID: 4422778654951944}
   m_Father: {fileID: 4713520047303080}
@@ -2091,7 +2091,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 26cdee844cb231740941635a5e5962c7, type: 2}
+  - {fileID: 2100000, guid: c74f59ad7e90ebd4587e67d3cf8607cc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2329,7 +2329,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e6ddc669e9faa4dad93207caa5a7c773, type: 2}
+  - {fileID: 2100000, guid: 81d9b121c3f3e1349a61e2dbcda06866, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2703,7 +2703,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e6ddc669e9faa4dad93207caa5a7c773, type: 2}
+  - {fileID: 2100000, guid: 81d9b121c3f3e1349a61e2dbcda06866, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3052,18 +3052,18 @@ TextMesh:
 
     of High Treason'
   m_OffsetZ: 0
-  m_CharacterSize: 1
-  m_LineSpacing: 0.6
+  m_CharacterSize: 1.35
+  m_LineSpacing: 0.8
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
   m_FontSize: 100
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: d99ece1b3dfcd404496b272eb31108c3, type: 3}
+  m_Font: {fileID: 12800000, guid: 0f4fc44c2f3dfdc478cbca5ed6016451, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281785737
 --- !u!102 &102123321256279346
 TextMesh:
   serializedVersion: 3
@@ -3084,7 +3084,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102130382086612942
 TextMesh:
   serializedVersion: 3
@@ -3105,7 +3105,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102145683346057800
 TextMesh:
   serializedVersion: 3
@@ -3126,7 +3126,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102180774284000366
 TextMesh:
   serializedVersion: 3
@@ -3147,7 +3147,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102453815772161306
 TextMesh:
   serializedVersion: 3
@@ -3155,7 +3155,7 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1982727586675816}
-  m_Text: 69!
+  m_Text: 000
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 0.6
@@ -3189,7 +3189,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4293848816
+    rgba: 2785017855
 --- !u!102 &102641974035990254
 TextMesh:
   serializedVersion: 3
@@ -3210,7 +3210,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102678430784458304
 TextMesh:
   serializedVersion: 3
@@ -3231,7 +3231,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102720315409403892
 TextMesh:
   serializedVersion: 3
@@ -3252,7 +3252,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4293848816
+    rgba: 2785017855
 --- !u!102 &102795071914482988
 TextMesh:
   serializedVersion: 3
@@ -3273,7 +3273,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102798108353956082
 TextMesh:
   serializedVersion: 3
@@ -3294,7 +3294,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102832660739241470
 TextMesh:
   serializedVersion: 3
@@ -3315,7 +3315,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102925817805984912
 TextMesh:
   serializedVersion: 3
@@ -3336,7 +3336,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102979793007061474
 TextMesh:
   serializedVersion: 3
@@ -3357,7 +3357,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!102 &102996949498757318
 TextMesh:
   serializedVersion: 3
@@ -3378,7 +3378,7 @@ TextMesh:
   m_Font: {fileID: 12800000, guid: 476486f0cab291f4081a0fa3991da58a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 3120562176
 --- !u!114 &114019086066851896
 MonoBehaviour:
   m_ObjectHideFlags: 1

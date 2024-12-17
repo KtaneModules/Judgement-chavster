@@ -16,31 +16,30 @@ public class Judgement : MonoBehaviour
     public KMSelectable[] VerdictPad;
     public TextMesh DisplayText;
     public TextMesh NumberText;
-
-    private string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Rich-Hard", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry \"Bee\"", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick" };
-    private string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Rock-Johnson", "King", "985", "Tron", "Serif", "Master", "Wi", "McBombface", ".HandlePass();", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name" };
-    private string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"Fuck\" :c", "Bad at Balatro", "meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "Jiggy wit it", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Naming" };
+    private string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David"};
+    private string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
+    private string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"Fuck\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
     private int ChosenForename;
     private int ChosenSurname;
     private int ChosenCrime;
     private int KeypadInput = -1;
     private Coroutine[] KeypadAnimCoroutines;
     private Coroutine[] VerdictAnimCoroutines;
+    private int NameSum;
 
     static int ModuleIdCounter = 1;
     int ModuleId;
     private bool ModuleSolved;
+    
 
     void Awake()
     {
         ModuleId = ModuleIdCounter++;
-        GetComponent<KMBombModule>().OnActivate += Activate;
-
-        ChosenForename = Rnd.Range(0, Forenames.Length);
-        ChosenSurname = Rnd.Range(0, Surnames.Length);
-        ChosenCrime = Rnd.Range(0, Crimes.Length);
         KeypadAnimCoroutines = new Coroutine[Keypad.Length];
         VerdictAnimCoroutines = new Coroutine[VerdictPad.Length];
+
+        Calculate();
+        DisplayCase();
 
         for (int i = 0; i < Keypad.Length; i++)
         {
@@ -54,30 +53,10 @@ public class Judgement : MonoBehaviour
             VerdictPad[x].OnInteract += delegate { VerdictPress(x); return false; };
         }
 
-        NumberText.text = "";
-
         StartCoroutine(GlitchText(NumberText.GetComponent<MeshRenderer>()));
         StartCoroutine(GlitchText(DisplayText.GetComponent<MeshRenderer>()));
-
-        DisplayCase();
-
     }
 
-
-    void Activate()
-    {
-
-    }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 
     void DisplayCase()
     {
@@ -90,15 +69,32 @@ public class Judgement : MonoBehaviour
         if (KeypadAnimCoroutines[pos] != null)
             StopCoroutine(KeypadAnimCoroutines[pos]);
         KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
+        
 
-        if (pos == 9)
+        if (pos == 9) // Clear Key
         {
             KeypadInput = -1;
             NumberText.text = "";
         }
-        else if (pos == 11)
+        else if (pos == 11) // Enter Key
         {
-            // Handle later
+            if (KeypadInput == NameSum)
+            {
+                DisplayText.text = "INNOCENT\n OR\n GUILTY?";
+                DisplayText.color = new Color32(164, 9, 9, 1);
+                NumberText.gameObject.SetActive(false);
+            }
+            
+
+            else
+            {
+                Strike();
+                KeypadInput = -1;
+                NumberText.text = "";
+                
+            }
+
+
         }
         else if (KeypadInput < 100)
         {
@@ -153,14 +149,21 @@ public class Judgement : MonoBehaviour
         target.transform.localPosition = new Vector3(target.transform.localPosition.x, start, target.transform.localPosition.z);
     }
 
+    void Log(string message)
+    {
+        Debug.LogFormat("[Judgement #{0}] {1}", ModuleId, message);
+    }
+
     void Solve()
     {
-        GetComponent<KMBombModule>().HandlePass();
+        Module.HandlePass();
     }
 
     void Strike()
     {
-        GetComponent<KMBombModule>().HandleStrike();
+        Module.HandleStrike();
+        Calculate();
+        DisplayCase();
     }
 
     private IEnumerator GlitchText(MeshRenderer target)
@@ -182,6 +185,26 @@ public class Judgement : MonoBehaviour
             }
             yield return new WaitForSeconds(Rnd.Range(0.075f, 0.125f));
         }
+    }
+
+    void Calculate()
+    {
+        ChosenForename = Rnd.Range(0, Forenames.Length);
+        ChosenSurname = Rnd.Range(0, Surnames.Length);
+        Log("The name is " + Forenames[ChosenForename] + " " + Surnames[ChosenSurname]);
+        ChosenCrime = Rnd.Range(0, Crimes.Length);
+
+        //Initialises letters into numbers
+        int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
+            .Select(x => x - 64)
+            .Sum();
+        int SurnameValue = Surnames[ChosenSurname].ToUpperInvariant().ToCharArray()
+            .Select(x => x - 64)
+            .Sum();
+        NameSum = ForenameValue + SurnameValue;
+        Log("The name value is " + NameSum);
+
+        NumberText.text = "";
     }
 
 #pragma warning disable 414
