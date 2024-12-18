@@ -113,24 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &21482370 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114988697475522994, guid: 352a105a097fadc4983ac642e7f3fa72,
-    type: 2}
-  m_PrefabInternal: {fileID: 991855608}
-  m_Script: {fileID: -119419473, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
---- !u!114 &21482371 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114773678294592390, guid: 352a105a097fadc4983ac642e7f3fa72,
-    type: 2}
-  m_PrefabInternal: {fileID: 991855608}
-  m_Script: {fileID: 2144496390, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
---- !u!114 &21482372 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114128770199950716, guid: 352a105a097fadc4983ac642e7f3fa72,
-    type: 2}
-  m_PrefabInternal: {fileID: 991855608}
-  m_Script: {fileID: -1675560866, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
 --- !u!1 &242472220
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,31 +298,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 102453815772161306, guid: 352a105a097fadc4983ac642e7f3fa72,
-        type: 2}
-      propertyPath: m_Color.rgba
-      value: 4278190256
-      objectReference: {fileID: 0}
-    - target: {fileID: 102108794659308828, guid: 352a105a097fadc4983ac642e7f3fa72,
-        type: 2}
-      propertyPath: m_Color.rgba
-      value: 4280723302
-      objectReference: {fileID: 0}
-    - target: {fileID: 114322615050668518, guid: 352a105a097fadc4983ac642e7f3fa72,
-        type: 2}
-      propertyPath: Module
-      value: 
-      objectReference: {fileID: 21482370}
-    - target: {fileID: 114322615050668518, guid: 352a105a097fadc4983ac642e7f3fa72,
-        type: 2}
-      propertyPath: Bomb
-      value: 
-      objectReference: {fileID: 21482371}
-    - target: {fileID: 114322615050668518, guid: 352a105a097fadc4983ac642e7f3fa72,
-        type: 2}
-      propertyPath: Audio
-      value: 
-      objectReference: {fileID: 21482372}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 352a105a097fadc4983ac642e7f3fa72, type: 2}
   m_IsPrefabParent: 0

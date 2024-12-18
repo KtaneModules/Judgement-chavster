@@ -16,21 +16,21 @@ public class Judgement : MonoBehaviour
     public KMSelectable[] VerdictPad;
     public TextMesh DisplayText;
     public TextMesh NumberText;
-    private string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David"};
-    private string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
-    private string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"Fuck\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
+    private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David"};
+    private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
+    public static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"Fuck\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
     private int ChosenForename;
     private int ChosenSurname;
-    private int ChosenCrime;
+    public int ChosenCrime;
     private int KeypadInput = -1;
     private Coroutine[] KeypadAnimCoroutines;
     private Coroutine[] VerdictAnimCoroutines;
-    private int NameSum;
-
+    public int ForenameValue;
+    public int SurnameValue;
+    public int NameSum;
     static int ModuleIdCounter = 1;
     int ModuleId;
     private bool ModuleSolved;
-    
 
     void Awake()
     {
@@ -65,11 +65,9 @@ public class Judgement : MonoBehaviour
 
     void KeypadPress(int pos)
     {
-
         if (KeypadAnimCoroutines[pos] != null)
             StopCoroutine(KeypadAnimCoroutines[pos]);
-        KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
-        
+        KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f)); 
 
         if (pos == 9) // Clear Key
         {
@@ -83,6 +81,8 @@ public class Judgement : MonoBehaviour
                 DisplayText.text = "INNOCENT\n OR\n GUILTY?";
                 DisplayText.color = new Color32(164, 9, 9, 1);
                 NumberText.gameObject.SetActive(false);
+                CrimePhaseCalc.GetVerdict(this);
+                
             }
             
 
@@ -96,7 +96,7 @@ public class Judgement : MonoBehaviour
 
 
         }
-        else if (KeypadInput < 100)
+        else if (KeypadInput < 10000)
         {
             var correspondingNums = new[] {
                 1, 2, 3,
@@ -149,7 +149,7 @@ public class Judgement : MonoBehaviour
         target.transform.localPosition = new Vector3(target.transform.localPosition.x, start, target.transform.localPosition.z);
     }
 
-    void Log(string message)
+    public void Log(string message)
     {
         Debug.LogFormat("[Judgement #{0}] {1}", ModuleId, message);
     }
