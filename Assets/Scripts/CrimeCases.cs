@@ -1,57 +1,77 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Runtime.InteropServices;
+using UnityEngine.XR.WSA.Input;
 
-public class CrimeCases {
-    public static int CrimeCase(int startValue)
-	{
-		switch (ChosenCrime)
-		{
-			case 0:
-
-				break;
-			case 1:
-
+partial class Judgement
+{
+    private int NameLength;
+    private bool IsInnocent = true;
+    private int Strikes;
+    void CrimeCalc(int pos)
+    {
+        switch (ChosenCrime)
+        {
+            case 0:
+                IsInnocent = NameSum > 150;
                 break;
+
+            case 1:
+                IsInnocent = ForenameValue > SurnameValue;
+                break;
+
             case 2:
-
+                IsInnocent = SurnameValue > ForenameValue;
                 break;
+
             case 3:
-
+                
                 break;
+
             case 4:
 
                 break;
+
             case 5:
 
+                IsInnocent = 115 < (NameSum - Forenames[ChosenForename].Length - Surnames[ChosenSurname].Length);
+
                 break;
+
             case 6:
 
                 break;
+
             case 7:
 
                 break;
+
             case 8:
 
                 break;
+
             case 9:
 
                 break;
+
             case 10:
 
                 break;
+
             case 11:
 
                 break;
+
             case 12:
 
                 break;
+
             case 13:
 
                 break;
+
             case 14:
 
                 break;
+
             case 15:
 
                 break;
@@ -106,15 +126,7 @@ public class CrimeCases {
             case 32:
 
                 break;
-            case 33:
-
-                break;
-            case 34:
-
-                break;
-
-
 
         }
-	}
+    }
 }
