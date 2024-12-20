@@ -29,9 +29,13 @@ partial class Judgement : MonoBehaviour
     static int ModuleIdCounter = 1;
     int ModuleId;
     private bool ModuleSolved;
-
+    private bool VerdictAccessible = false;
+    private bool StrikeChange = false;
+    private int SolvedModules = 0;
+    private int UnsolvedModules= 0;
     void Awake()
     {
+        
         ModuleId = ModuleIdCounter++;
         KeypadAnimCoroutines = new Coroutine[Keypad.Length];
         VerdictAnimCoroutines = new Coroutine[VerdictPad.Length];
@@ -62,11 +66,13 @@ partial class Judgement : MonoBehaviour
         DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
         Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
         DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
+        DisplayText.color = new Color32(102, 162, 38, 1);
 
     }
 
     void KeypadPress(int pos)
     {
+        Audio.PlaySoundAtTransform("keypadPressAudio", Keypad[pos].transform);
         if (KeypadAnimCoroutines[pos] != null)
             StopCoroutine(KeypadAnimCoroutines[pos]);
         KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f)); 
@@ -80,6 +86,7 @@ partial class Judgement : MonoBehaviour
         {
             if (KeypadInput == NameSum)
             {
+                VerdictAccessible = true;
                 DisplayText.text = "INNOCENT\n OR\n GUILTY?";
                 DisplayText.color = new Color32(164, 9, 9, 1);
                 NumberText.gameObject.SetActive(false);
@@ -118,20 +125,25 @@ partial class Judgement : MonoBehaviour
 
     void VerdictPress(int pos)
     {
-
-        if (VerdictAnimCoroutines[pos] != null)
-            StopCoroutine(VerdictAnimCoroutines[pos]);
-        VerdictAnimCoroutines[pos] = StartCoroutine(ButtonAnim(VerdictPad[pos].transform, 0, -0.0075f));
-
-        if ((pos == 0 && !IsInnocent) || (pos == 1 && IsInnocent))
+        if (VerdictAccessible == true)
         {
-            StartCoroutine(Solve(pos));
-        }
-        else
-        {
-            Strike(pos, "You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
-        }
+            if (VerdictAnimCoroutines[pos] != null)
+                StopCoroutine(VerdictAnimCoroutines[pos]);
+            VerdictAnimCoroutines[pos] = StartCoroutine(ButtonAnim(VerdictPad[pos].transform, 0, -0.0075f));
 
+            if ((pos == 0 && !IsInnocent) || (pos == 1 && IsInnocent))
+            {
+                StartCoroutine(Solve(pos));
+            }
+            else
+            {
+                
+                Strike(pos, "You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
+                NumberText.gameObject.SetActive(true);
+                DisplayCase();
+            }
+        }
+        
     }
 
     private IEnumerator ButtonAnim(Transform target, float start, float end, float duration = 0.075f)
@@ -176,12 +188,23 @@ partial class Judgement : MonoBehaviour
         
     }
 
+    void Update()
+    {
+        SolvedModules = Bomb.GetSolvedModuleNames().Count();
+        UnsolvedModules = Bomb.GetModuleNames().Count();
+
+    }
+
 
     void Strike(int pos, string log)
     {
+        VerdictAccessible = false;
         Log(log);
         Module.HandleStrike();
         Calculate();
+        NumberText.gameObject.SetActive(true);
+        KeypadInput = -1;
+        NumberText.text = "";
         DisplayCase();
     }
 
@@ -211,7 +234,7 @@ partial class Judgement : MonoBehaviour
         ChosenForename = Rnd.Range(0, Forenames.Length);
         ChosenSurname = Rnd.Range(0, Surnames.Length);
         Log("The name is " + Forenames[ChosenForename] + " " + Surnames[ChosenSurname]);
-        ChosenCrime = Rnd.Range(0, Crimes.Length);
+        ChosenCrime = 7;
 
         //Initialises letters into numbers
         int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()

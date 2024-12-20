@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Linq;
+using System.Runtime.InteropServices;
+using JetBrains.Annotations;
+using KModkit;
 using UnityEngine.XR.WSA.Input;
 
 partial class Judgement
@@ -27,7 +30,8 @@ partial class Judgement
                 break;
 
             case 4:
-
+                IsInnocent = SolvedModules > UnsolvedModules;
+                Log("The number of solved modules is " + SolvedModules + ". Press " + (IsInnocent ? "INNOCENT" : "GUILTY"));
                 break;
 
             case 5:
@@ -38,10 +42,15 @@ partial class Judgement
 
             case 6:
 
+                IsInnocent = 2000 < (Bomb.GetPortCount() * NameSum);
+
                 break;
 
             case 7:
-
+                
+                string s = NameSum.ToString();
+                
+                IsInnocent = s.Any(x => "97531".Contains(x));
                 break;
 
             case 8:
