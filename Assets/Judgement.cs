@@ -16,7 +16,7 @@ partial class Judgement : MonoBehaviour
     public TextMesh NumberText;
     private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik"};
     private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell"};
-    private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"Fuck\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
+    private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"&$@!\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
     private int ChosenForename;
     private int ChosenSurname;
     private int ChosenCrime;
@@ -90,7 +90,8 @@ partial class Judgement : MonoBehaviour
                 DisplayText.text = "INNOCENT\n OR\n GUILTY?";
                 DisplayText.color = new Color32(164, 9, 9, 1);
                 NumberText.gameObject.SetActive(false);
-                CrimeCalc(pos);
+                StopCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
+                CrimeCalc();
                 
             }
             
@@ -192,7 +193,7 @@ partial class Judgement : MonoBehaviour
     {
         SolvedModules = Bomb.GetSolvedModuleNames().Count();
         UnsolvedModules = Bomb.GetModuleNames().Count();
-
+        ChangeStrikes(Strikes);
     }
 
 
@@ -206,6 +207,7 @@ partial class Judgement : MonoBehaviour
         KeypadInput = -1;
         NumberText.text = "";
         DisplayCase();
+        
     }
 
     private IEnumerator GlitchText(MeshRenderer target)
@@ -234,14 +236,14 @@ partial class Judgement : MonoBehaviour
         ChosenForename = Rnd.Range(0, Forenames.Length);
         ChosenSurname = Rnd.Range(0, Surnames.Length);
         Log("The name is " + Forenames[ChosenForename] + " " + Surnames[ChosenSurname]);
-        ChosenCrime = 7;
+        ChosenCrime = 22;
 
         //Initialises letters into numbers
         int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
-            .Select(x => x - 64)
+            .Select(x => x - '@')
             .Sum();
         int SurnameValue = Surnames[ChosenSurname].ToUpperInvariant().ToCharArray()
-            .Select(x => x - 64)
+            .Select(x => x - '@')
             .Sum();
         NameSum = ForenameValue + SurnameValue;
         Log("The name value is " + NameSum);
