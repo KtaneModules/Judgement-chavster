@@ -76,43 +76,6 @@ partial class Judgement
                 break;
 
             case 11:
-                
-                break;
-
-            case 12:
-
-                break;
-
-            case 13:
-
-                break;
-
-            case 14:
-
-                break;
-
-            case 15:
-
-                break;
-            case 16:
-
-                break;
-            case 17:
-
-                break;
-            case 18:
-
-                break;
-            case 19:
-
-                break;
-            case 20:
-
-                break;
-            case 21:
-
-                break;
-            case 22:
                 IsInnocent = Rnd.Range(0, 2) == 0;
                 if (IsInnocent)
                 {
@@ -123,36 +86,6 @@ partial class Judgement
                 {
                     Log("The sound did not play, press GUILTY");
                 }
-                break;
-            case 23:
-
-                break;
-            case 24:
-
-                break;
-            case 25:
-
-                break;
-            case 26:
-
-                break;
-            case 27:
-
-                break;
-            case 28:
-
-                break;
-            case 29:
-
-                break;
-            case 30:
-
-                break;
-            case 31:
-
-                break;
-            case 32:
-
                 break;
 
         }

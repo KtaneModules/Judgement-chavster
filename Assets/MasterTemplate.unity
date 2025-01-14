@@ -307,6 +307,21 @@ Prefab:
 
         of High Treason'
       objectReference: {fileID: 0}
+    - target: {fileID: 23545746337463954, guid: 352a105a097fadc4983ac642e7f3fa72,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 46e4e9447aecc7043ab0cbadcab41e89, type: 2}
+    - target: {fileID: 114322615050668518, guid: 352a105a097fadc4983ac642e7f3fa72,
+        type: 2}
+      propertyPath: displayMesh
+      value: 
+      objectReference: {fileID: 2100000, guid: 46e4e9447aecc7043ab0cbadcab41e89, type: 2}
+    - target: {fileID: 114322615050668518, guid: 352a105a097fadc4983ac642e7f3fa72,
+        type: 2}
+      propertyPath: displayMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 46e4e9447aecc7043ab0cbadcab41e89, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 352a105a097fadc4983ac642e7f3fa72, type: 2}
   m_IsPrefabParent: 0

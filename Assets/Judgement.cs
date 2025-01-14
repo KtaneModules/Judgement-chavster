@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using KModkit;
 using Rnd = UnityEngine.Random;
-using System;
 
 partial class Judgement : MonoBehaviour
 {
@@ -14,9 +13,10 @@ partial class Judgement : MonoBehaviour
     public KMSelectable[] VerdictPad;
     public TextMesh DisplayText;
     public TextMesh NumberText;
-    private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik"};
-    private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell"};
-    private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Trolling", "Cringe on Main", "Said \"&$@!\" :c", "Bad at Balatro", "Meanie :c", "Morbing", "araraarar", "Bad Romance", "Deaf and Blind", "Bees", "the", "Teleporting Bread", "Blasphemy", "gettin \"jiggy wit it\"", "Rap Battle", "Aurora Borealis", "Poker Face", "Party Rockin'", "Witchcraft", "Downloading a Car", "Food Review", "NUMBERWANG!" };
+    public Material displayMat;
+    private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik" };
+    private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
+    private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Teleporting Bread" };
     private int ChosenForename;
     private int ChosenSurname;
     private int ChosenCrime;
@@ -32,17 +32,18 @@ partial class Judgement : MonoBehaviour
     private bool VerdictAccessible = false;
     private bool StrikeChange = false;
     private int SolvedModules = 0;
-    private int UnsolvedModules= 0;
+    private int UnsolvedModules = 0;
     void Awake()
     {
-        
+
         ModuleId = ModuleIdCounter++;
         KeypadAnimCoroutines = new Coroutine[Keypad.Length];
         VerdictAnimCoroutines = new Coroutine[VerdictPad.Length];
 
         Calculate();
         DisplayCase();
-        
+        StartCoroutine(TheScanline());
+
 
         for (int i = 0; i < Keypad.Length; i++)
         {
@@ -75,7 +76,7 @@ partial class Judgement : MonoBehaviour
         Audio.PlaySoundAtTransform("keypadPressAudio", Keypad[pos].transform);
         if (KeypadAnimCoroutines[pos] != null)
             StopCoroutine(KeypadAnimCoroutines[pos]);
-        KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f)); 
+        KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
 
         if (pos == 9) // Clear Key
         {
@@ -90,11 +91,12 @@ partial class Judgement : MonoBehaviour
                 DisplayText.text = "INNOCENT\n OR\n GUILTY?";
                 DisplayText.color = new Color32(164, 9, 9, 1);
                 NumberText.gameObject.SetActive(false);
+                NameSum = 0;
                 StopCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
                 CrimeCalc();
-                
+
             }
-            
+
 
             else
             {
@@ -138,13 +140,13 @@ partial class Judgement : MonoBehaviour
             }
             else
             {
-                
+
                 Strike(pos, "You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
                 NumberText.gameObject.SetActive(true);
                 DisplayCase();
             }
         }
-        
+
     }
 
     private IEnumerator ButtonAnim(Transform target, float start, float end, float duration = 0.075f)
@@ -178,7 +180,7 @@ partial class Judgement : MonoBehaviour
     }
 
     private IEnumerator Solve(int pos)
-    {  
+    {
         DisplayText.text = Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\n" + "IS " + ((pos == 1 ? "INNOCENT" : "GUILTY"));
         DisplayText.color = new Color32(129, 0, 0, 1);
         Module.HandlePass();
@@ -186,7 +188,7 @@ partial class Judgement : MonoBehaviour
         yield return new WaitForSeconds(5);
         DisplayText.fontSize = 250;
         DisplayText.text = "SOLVED";
-        
+
     }
 
     void Update()
@@ -194,6 +196,7 @@ partial class Judgement : MonoBehaviour
         SolvedModules = Bomb.GetSolvedModuleNames().Count();
         UnsolvedModules = Bomb.GetModuleNames().Count();
         ChangeStrikes(Strikes);
+        ScanlineColourChange();
     }
 
 
@@ -207,7 +210,21 @@ partial class Judgement : MonoBehaviour
         KeypadInput = -1;
         NumberText.text = "";
         DisplayCase();
-        
+
+    }
+
+    void ScanlineColourChange()
+    {
+        if (VerdictAccessible == true)
+        {
+            displayMat.color = new Color32(30, 0, 0, 255);
+          
+        }
+        else
+        {
+            displayMat.color = new Color32(2, 36, 3, 255); 
+        }
+
     }
 
     private IEnumerator GlitchText(MeshRenderer target)
@@ -231,12 +248,25 @@ partial class Judgement : MonoBehaviour
         }
     }
 
+    private IEnumerator TheScanline()
+    {
+
+        while (true)
+        {
+            yield return null;
+            float offset = Time.time % 1;
+            displayMat.SetTextureOffset("_MainTex", new Vector2(0, -offset));
+
+        }
+
+    }
+
     void Calculate()
     {
         ChosenForename = Rnd.Range(0, Forenames.Length);
         ChosenSurname = Rnd.Range(0, Surnames.Length);
         Log("The name is " + Forenames[ChosenForename] + " " + Surnames[ChosenSurname]);
-        ChosenCrime = 22;
+        ChosenCrime = 11;
 
         //Initialises letters into numbers
         int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
