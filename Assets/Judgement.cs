@@ -23,9 +23,9 @@ partial class Judgement : MonoBehaviour
     private int KeypadInput = -1;
     private Coroutine[] KeypadAnimCoroutines;
     private Coroutine[] VerdictAnimCoroutines;
-    private int ForenameValue;
-    private int SurnameValue;
-    private int NameSum;
+    public static int ForenameValue;
+    public static int SurnameValue;
+    private static int NameSum;
     static int ModuleIdCounter = 1;
     int ModuleId;
     private bool ModuleSolved;
@@ -191,6 +191,9 @@ partial class Judgement : MonoBehaviour
         DisplayText.fontSize = 250;
         DisplayText.text = "SOLVED";
         Audio.PlaySoundAtTransform("SolveNoise", DisplayText.transform);
+
+        yield return new WaitForSeconds(5);
+        DisplayText.gameObject.SetActive(false);
         
         
         
@@ -277,10 +280,10 @@ partial class Judgement : MonoBehaviour
         ChosenCrime = Rnd.Range(0, Crimes.Length);
 
         //Initialises letters into numbers
-        int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
+        ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
             .Select(x => x - '@')
             .Sum();
-        int SurnameValue = Surnames[ChosenSurname].ToUpperInvariant().ToCharArray()
+        SurnameValue = Surnames[ChosenSurname].ToUpperInvariant().ToCharArray()
             .Select(x => x - '@')
             .Sum();
         NameSum = ForenameValue + SurnameValue;
