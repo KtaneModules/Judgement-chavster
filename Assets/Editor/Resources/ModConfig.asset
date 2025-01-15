@@ -11,13 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
   m_Name: ModConfig
   m_EditorClassIdentifier: 
-  id: template
-  title: Template
-  author: 
-  description: "[INSERT FLAVOR TEXT HERE]\n\n[INSERT SOLVING DESCRIPTION HERE]\n\n[INSERT
-    POTENTIAL CREDITS HERE]\n\nThe manual can be found in the manuals folder of the
-    game or at ktane.timwi.de.\n\r\nContact Fartlicker777#9169 on Discord if there
-    are any bugs."
-  version: 
+  id: Judgement.ron
+  title: Judgement
+  author: chavster
+  description: 'Ooo look, my second ever module! Now with A1Z26!
+
+
+    As always, thank you to everyone who helped me out (and will help me out!) I love
+    yall and I will be making more stuff in the future! :3'
+  version: 0.9
   outputFolder: build
   previewImage: {fileID: 0}

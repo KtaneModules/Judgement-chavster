@@ -64,10 +64,11 @@ partial class Judgement : MonoBehaviour
 
     void DisplayCase()
     {
-        DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
-        Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
-        DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
-        DisplayText.color = new Color32(102, 162, 38, 1);
+
+            DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
+            Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
+            DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
+            DisplayText.color = new Color32(102, 162, 38, 1);
 
     }
 
@@ -184,11 +185,15 @@ partial class Judgement : MonoBehaviour
         DisplayText.text = Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\n" + "IS " + ((pos == 1 ? "INNOCENT" : "GUILTY"));
         DisplayText.color = new Color32(129, 0, 0, 1);
         Module.HandlePass();
+        ModuleSolved = true;
 
         yield return new WaitForSeconds(5);
         DisplayText.fontSize = 250;
         DisplayText.text = "SOLVED";
-
+        Audio.PlaySoundAtTransform("SolveNoise", DisplayText.transform);
+        
+        
+        
     }
 
     void Update()
@@ -202,14 +207,17 @@ partial class Judgement : MonoBehaviour
 
     void Strike(int pos, string log)
     {
-        VerdictAccessible = false;
-        Log(log);
-        Module.HandleStrike();
-        Calculate();
-        NumberText.gameObject.SetActive(true);
-        KeypadInput = -1;
-        NumberText.text = "";
-        DisplayCase();
+        if (!ModuleSolved)
+        {
+            VerdictAccessible = false;
+            Log(log);
+            Module.HandleStrike();
+            Calculate();
+            NumberText.gameObject.SetActive(true);
+            KeypadInput = -1;
+            NumberText.text = "";
+            DisplayCase();
+        }
 
     }
 
@@ -266,7 +274,7 @@ partial class Judgement : MonoBehaviour
         ChosenForename = Rnd.Range(0, Forenames.Length);
         ChosenSurname = Rnd.Range(0, Surnames.Length);
         Log("The name is " + Forenames[ChosenForename] + " " + Surnames[ChosenSurname]);
-        ChosenCrime = 11;
+        ChosenCrime = Rnd.Range(0, Crimes.Length);
 
         //Initialises letters into numbers
         int ForenameValue = Forenames[ChosenForename].ToUpperInvariant().ToCharArray()
