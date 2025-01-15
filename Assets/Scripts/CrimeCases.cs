@@ -9,7 +9,6 @@ partial class Judgement
     private int Strikes;
     void CrimeCalc()
     {
-        Log("CrimeCalc check");
         switch (ChosenCrime)
         {
             case 0:
@@ -24,7 +23,7 @@ partial class Judgement
 
             case 2:
                 IsInnocent = SurnameValue > ForenameValue;
-                Log("Press " + (ForenameValue < SurnameValue ? "INNOCENT" : "GUILTY"));
+                Log("Press " + (SurnameValue > ForenameValue ? "INNOCENT" : "GUILTY"));
                 break;
 
             case 3:
@@ -46,7 +45,7 @@ partial class Judgement
             case 6:
 
                 IsInnocent = 750 < (Bomb.GetPortCount() * NameSum);
-
+                Log("Number of Ports * Sum of Letters is " + (IsInnocent ? "More than 750. Press INNOCENT." : "Less than 750. Press GUILTY"));
                 break;
 
             case 7:
@@ -54,11 +53,13 @@ partial class Judgement
                 string o = NameSum.ToString();
                 
                 IsInnocent = o.Any(x => "97531".Contains(x));
+                Log("The sum of the letters contains " + (IsInnocent ? "an odd number. Press INNOCENT" : "no odd numbers. Press GUILTY"));
                 break;
 
             case 8:
                 string e = NameSum.ToString();
                 IsInnocent = e.Any(x => "08642".Contains(x));
+                Log("The sum of the letters contains " + (IsInnocent ? "an even number. Press INNOCENT" : "no even numbers. Press GUILTY"));
                 break;
 
             case 9:
