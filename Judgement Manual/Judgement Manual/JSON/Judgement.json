@@ -1,2 +1,16 @@
-Replace this with a JSON generated at ktane.timwi.de (see Tools -> Create new module)
-Don't forget to add Tags to the description that describe what your module LOOKS LIKE to be able to find it in the list from the defuser's description.
+{
+  "Author": "Chavster",
+  "Compatibility": "Compatible",
+  "DefuserDifficulty": "Easy",
+  "Description": "Solve a 2-Phase Module using A1Z26 and edgework! Tags: keypad, verdict, innocent, guilty, judge, 2 phase, numbers",
+  "ExpertDifficulty": "Easy",
+  "ModuleID": "Judgement.ron",
+  "Name": "Judgement",
+  "Origin": "Mods",
+  "Published": "2025-01-16",
+  "SortKey": "JUDGEMENT",
+  "SourceUrl": "https://github.com/chavster/Judgement",
+  "SteamID": "3408560978",
+  "Symbol": "Ju",
+  "Type": "Regular"
+}
