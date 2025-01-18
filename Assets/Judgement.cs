@@ -295,7 +295,7 @@ partial class Judgement : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} to do something.";
+    private readonly string TwitchHelpMessage = @"!{0} input ### inputs up to three numbers to enter. || !{0} declare guilty/innocent presses either the guilty or innocent button.";
 #pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string command)
