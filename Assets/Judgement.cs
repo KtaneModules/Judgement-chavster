@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using KModkit;
+using KeepCoding;
 using Rnd = UnityEngine.Random;
 
 partial class Judgement : MonoBehaviour
@@ -202,7 +204,7 @@ partial class Judgement : MonoBehaviour
     void Update()
     {
         SolvedModules = Bomb.GetSolvedModuleNames().Count();
-        UnsolvedModules = Bomb.GetModuleNames().Count();
+        UnsolvedModules = Bomb.GetUnsolvedModuleNames().Count();
         ChangeStrikes(Strikes);
         ScanlineColourChange();
     }
@@ -293,16 +295,121 @@ partial class Judgement : MonoBehaviour
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} to do something.";
+    private readonly string TwitchHelpMessage = @"!{0} input ### inputs up to three numbers to enter. || !{0} declare guilty/innocent presses either the guilty or innocent button.";
 #pragma warning restore 414
 
-    IEnumerator ProcessTwitchCommand(string Command)
+    IEnumerator ProcessTwitchCommand(string command)
     {
+        string[] split = command.ToUpperInvariant().Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+        var keypadIx = "123456789C0E";
+
         yield return null;
+
+        if ("INPUT".ContainsIgnoreCase(split[0]))
+        {
+            if (VerdictAccessible)
+            {
+                yield return "sendtochaterror The keypad is no longer accessible!";
+                yield break;
+            }
+
+            if (split.Length == 1)
+            {
+                yield return "sendtochaterror Please specify what number to input!";
+                yield break;
+            }
+
+            if (split.Length > 2)
+                yield break;
+
+            if (split[1].Length > 3)
+            {
+                yield return "sendtochaterror You cannot input more than 3 numbers!";
+                yield break;
+            }
+
+            if (!split[1].All(char.IsDigit))
+            {
+                yield return "sendtochaterror Please do not input anything that isn't a number!";
+                yield break;
+            }
+
+            if (KeypadInput != -1)
+            {
+                Keypad[9].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            foreach (var num in split[1])
+            {
+                Keypad[keypadIx.IndexOf(num)].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            Keypad[11].OnInteract();
+            yield return new WaitForSeconds(0.1f);
+
+            yield break;
+        }
+
+        if ("DECLARE".ContainsIgnoreCase(split[0]))
+        {
+            if (!VerdictAccessible)
+            {
+                yield return "sendtochaterror There is no verdict prompted yet!";
+                yield break;
+            }
+
+            if (split.Length == 1)
+            {
+                yield return "sendtochaterror Please specify whether they are guilty or innocent!";
+                yield break;
+            }
+
+            if (split.Length > 2)
+                yield break;
+
+            var verdicts = new[] { "GUILTY", "INNOCENT" };
+
+            if (!verdicts.Any(x => x.ContainsIgnoreCase(split[1])))
+            {
+                yield return string.Format("{0} is not a valid verdict!", split[1]);
+                yield break;
+            }
+
+            VerdictPad[Array.IndexOf(verdicts, split[1])].OnInteract();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        
     }
 
     IEnumerator TwitchHandleForcedSolve()
     {
         yield return null;
+
+        if (!VerdictAccessible)
+        {
+            if (KeypadInput != -1)
+            {
+                Keypad[9].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            var solutionIxes = NameSum.ToString().Select(x => "123456789C0E".IndexOf(x)).ToArray();
+
+            foreach (var num in solutionIxes)
+            {
+                Keypad[num].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            Keypad[11].OnInteract();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        VerdictPad[IsInnocent ? 1 : 0].OnInteract();
+        yield return new WaitForSeconds(0.1f);
     }
 }
