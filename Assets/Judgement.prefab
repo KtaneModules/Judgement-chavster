@@ -2359,7 +2359,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 81d9b121c3f3e1349a61e2dbcda06866, type: 2}
+  - {fileID: 2100000, guid: 46e4e9447aecc7043ab0cbadcab41e89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3078,7 +3078,7 @@ TextMesh:
   m_GameObject: {fileID: 1323948547264210}
   m_Text: 'The court accuses
 
-    Stanley 8
+    Superintendent McGooberson
 
     of High Treason'
   m_OffsetZ: 0
@@ -3822,7 +3822,7 @@ MonoBehaviour:
   - {fileID: 114599480486742432}
   DisplayText: {fileID: 102108794659308828}
   NumberText: {fileID: 102453815772161306}
-  displayMat: {fileID: 0}
+  displayMat: {fileID: 2100000, guid: 46e4e9447aecc7043ab0cbadcab41e89, type: 2}
 --- !u!114 &114347958400521722
 MonoBehaviour:
   m_ObjectHideFlags: 1
