@@ -15,37 +15,41 @@ partial class Judgement : MonoBehaviour
     public KMSelectable[] VerdictPad;
     public TextMesh DisplayText;
     public TextMesh NumberText;
-    public Material displayMat;
-    private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik" };
-    private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
-    private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Teleporting Bread" };
-    private static int ChosenForename;
-    private static int ChosenSurname;
-    private static int ChosenCrime;
+    public MeshRenderer DisplayRend;
+
+    static int _moduleIdCounter = 1;
+    int _moduleId;
+
+    private static readonly string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik" };
+    private static readonly string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
+    private static readonly string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Teleporting Bread" };
+    private int ChosenForename;
+    private int ChosenSurname;
+    private int ChosenCrime;
     private int KeypadInput = -1;
     private Coroutine[] KeypadAnimCoroutines;
     private Coroutine[] VerdictAnimCoroutines;
-    public static int ForenameValue;
-    public static int SurnameValue;
-    public static int NameSum;
-    static int ModuleIdCounter = 1;
-    int ModuleId;
+    private int ForenameValue;
+    private int SurnameValue;
+    private int NameSum;
     private bool ModuleSolved;
     private bool VerdictAccessible = false;
+    private bool CanPress;
     private bool StrikeChange = false;
     private int SolvedModules = 0;
     private int UnsolvedModules = 0;
+
     void Awake()
     {
-
-        ModuleId = ModuleIdCounter++;
+        _moduleId = _moduleIdCounter++;
         KeypadAnimCoroutines = new Coroutine[Keypad.Length];
         VerdictAnimCoroutines = new Coroutine[VerdictPad.Length];
 
         Calculate();
-        DisplayCase();
         StartCoroutine(TheScanline());
 
+        DisplayRend.material.color = Color.black;
+        DisplayText.color = new Color32(102, 162, 38, 0);
 
         for (int i = 0; i < Keypad.Length; i++)
         {
@@ -59,86 +63,99 @@ partial class Judgement : MonoBehaviour
             VerdictPad[x].OnInteract += delegate { VerdictPress(x); return false; };
         }
 
-        StartCoroutine(GlitchText(NumberText.GetComponent<MeshRenderer>()));
-        StartCoroutine(GlitchText(DisplayText.GetComponent<MeshRenderer>()));
+        Module.OnActivate += delegate { DisplayRend.material.color = new Color32(2, 36, 0, 255); CanPress = true;
+            StartCoroutine(GlitchText(NumberText.GetComponent<MeshRenderer>()));
+            StartCoroutine(GlitchText(DisplayText.GetComponent<MeshRenderer>()));
+            DisplayCase();
+        };
     }
-
 
     void DisplayCase()
     {
         DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
-        Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
         DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
-        DisplayText.color = new Color32(102, 162, 38, 1);
+        DisplayText.color = new Color32(102, 162, 38, (byte)Mathf.Ceil(DisplayText.color.a * 255));
     }
 
     void KeypadPress(int pos)
     {
-        Audio.PlaySoundAtTransform("keypadPressAudio", Keypad[pos].transform);
-        if (KeypadAnimCoroutines[pos] != null)
-            StopCoroutine(KeypadAnimCoroutines[pos]);
-        KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
+        if (CanPress)
+        {
+            Audio.PlaySoundAtTransform("keypadPress", Keypad[pos].transform);
+            if (KeypadAnimCoroutines[pos] != null)
+                StopCoroutine(KeypadAnimCoroutines[pos]);
+            KeypadAnimCoroutines[pos] = StartCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
+            Keypad[pos].AddInteractionPunch();
 
-        if (pos == 9) // Clear Key
-        {
-            KeypadInput = -1;
-            NumberText.text = "";
-        }
-        else if (pos == 11) // Enter Key
-        {
-            if (KeypadInput == NameSum)
+            if (!ModuleSolved && !VerdictAccessible)
             {
-                VerdictAccessible = true;
-                DisplayText.text = "INNOCENT\n OR\n GUILTY?";
-                DisplayText.color = new Color32(164, 9, 9, 1);
-                NumberText.gameObject.SetActive(false);
-                NameSum = 0;
-                StopCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
-                CrimeCalc();
-            }
-
-            else
-            {
-                Strike(pos, "You input " + KeypadInput + " which was incorrect.");
-                KeypadInput = -1;
-                NumberText.text = "";
-            }
-        }
-        else if (KeypadInput < 100)
-        {
-            var correspondingNums = new[] {
+                if (pos == 9) // Clear Key
+                {
+                    KeypadInput = -1;
+                    NumberText.text = "";
+                }
+                else if (pos == 11) // Enter Key
+                {
+                    if (KeypadInput == NameSum)
+                    {
+                        VerdictAccessible = true;
+                        DisplayRend.material.color = new Color32(30, 0, 0, 255);
+                        DisplayText.text = "INNOCENT\nOR\nGUILTY?";
+                        DisplayText.color = new Color32(164, 9, 9, (byte)Mathf.Ceil(DisplayText.color.a * 255));
+                        DisplayText.characterSize = 1.35f;
+                        NumberText.gameObject.SetActive(false);
+                        StopCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
+                        CrimeCalc();
+                    }
+                    else
+                    {
+                        Strike("You input " + KeypadInput + " which was incorrect.");
+                        KeypadInput = -1;
+                        NumberText.text = "";
+                    }
+                }
+                else if (KeypadInput < 100)
+                {
+                    var correspondingNums = new[] {
                 1, 2, 3,
                 4, 5, 6,
                 7, 8, 9,
                 -1,0,-1 };
 
-            var pressedNum = correspondingNums[pos];
+                    var pressedNum = correspondingNums[pos];
 
-            if (KeypadInput == -1)
-                KeypadInput = pressedNum;
-            else
-                KeypadInput = (KeypadInput * 10) + pressedNum;
-            NumberText.text = KeypadInput.ToString();
+                    if (KeypadInput == -1)
+                        KeypadInput = pressedNum;
+                    else
+                        KeypadInput = (KeypadInput * 10) + pressedNum;
+                    NumberText.text = KeypadInput.ToString();
+                }
+            }
         }
     }
 
     void VerdictPress(int pos)
     {
-        if (VerdictAccessible == true)
+        if (CanPress)
         {
+            Audio.PlaySoundAtTransform("keypadPress", VerdictPad[pos].transform);
             if (VerdictAnimCoroutines[pos] != null)
                 StopCoroutine(VerdictAnimCoroutines[pos]);
             VerdictAnimCoroutines[pos] = StartCoroutine(ButtonAnim(VerdictPad[pos].transform, 0, -0.0075f));
+            VerdictPad[pos].AddInteractionPunch();
 
-            if ((pos == 0 && !IsInnocent) || (pos == 1 && IsInnocent))
+            if (!ModuleSolved)
             {
-                StartCoroutine(Solve(pos));
-            }
-            else
-            {
-                Strike(pos, "You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
-                NumberText.gameObject.SetActive(true);
-                DisplayCase();
+                if ((pos == 0 && !IsInnocent) || (pos == 1 && IsInnocent))
+                {
+                    StartCoroutine(Solve(pos));
+                }
+                else
+                {
+                    Strike("You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
+                    NumberText.gameObject.SetActive(true);
+                    DisplayCase();
+                }
             }
         }
 
@@ -171,7 +188,7 @@ partial class Judgement : MonoBehaviour
 
     public void Log(string message)
     {
-        Debug.LogFormat("[Judgement #{0}] {1}", ModuleId, message);
+        Debug.LogFormat("[Judgement #{0}] {1}", _moduleId, message);
     }
 
     private IEnumerator Solve(int pos)
@@ -184,13 +201,19 @@ partial class Judgement : MonoBehaviour
         yield return new WaitForSeconds(5);
         DisplayText.fontSize = 250;
         DisplayText.text = "SOLVED";
-        Audio.PlaySoundAtTransform("SolveNoise", DisplayText.transform);
+        Audio.PlaySoundAtTransform("solveNoise", DisplayText.transform);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4.5f);
+
+        float timer = 0;
+        while (timer < 0.5f)
+        {
+            DisplayText.GetComponent<MeshRenderer>().material.SetTextureOffset("_MainTex", new Vector2(Rnd.Range(0, 1f), Rnd.Range(0, 1f)));
+            yield return null;
+            timer += Time.deltaTime;
+        }
+
         DisplayText.gameObject.SetActive(false);
-        
-        
-        
     }
 
     void Update()
@@ -198,15 +221,15 @@ partial class Judgement : MonoBehaviour
         SolvedModules = Bomb.GetSolvedModuleNames().Count();
         UnsolvedModules = Bomb.GetUnsolvedModuleNames().Count();
         ChangeStrikes(Strikes);
-        ScanlineColourChange();
     }
 
 
-    void Strike(int pos, string log)
+    void Strike(string log)
     {
         if (!ModuleSolved)
         {
             VerdictAccessible = false;
+            DisplayRend.material.color = new Color32(2, 36, 0, 255);
             Log(log);
             Module.HandleStrike();
             Calculate();
@@ -214,20 +237,6 @@ partial class Judgement : MonoBehaviour
             KeypadInput = -1;
             NumberText.text = "";
             DisplayCase();
-        }
-
-    }
-
-    void ScanlineColourChange()
-    {
-        if (VerdictAccessible == true)
-        {
-            displayMat.color = new Color32(30, 0, 0, 255);
-          
-        }
-        else
-        {
-            displayMat.color = new Color32(2, 36, 0, 255); 
         }
 
     }
@@ -255,15 +264,12 @@ partial class Judgement : MonoBehaviour
 
     private IEnumerator TheScanline()
     {
-
         while (true)
         {
             yield return null;
             float offset = Time.time % 1;
-            displayMat.SetTextureOffset("_MainTex", new Vector2(0, -offset));
-
+            DisplayRend.material.SetTextureOffset("_MainTex", new Vector2(0, -offset));
         }
-
     }
 
     void Calculate()
@@ -373,8 +379,6 @@ partial class Judgement : MonoBehaviour
             VerdictPad[Array.IndexOf(verdicts, split[1])].OnInteract();
             yield return new WaitForSeconds(0.1f);
         }
-
-        
     }
 
     IEnumerator TwitchHandleForcedSolve()

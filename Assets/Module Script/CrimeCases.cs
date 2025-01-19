@@ -4,7 +4,6 @@ using Rnd = UnityEngine.Random;
 
 partial class Judgement
 {
-    private int NameLength = (Forenames[ChosenForename].Length - Surnames[ChosenSurname].Length);
     private bool IsInnocent = true;
     private int Strikes;
     
@@ -13,82 +12,79 @@ partial class Judgement
         switch (ChosenCrime)
         {
             case 0:
-                IsInnocent = (ForenameValue + SurnameValue) > 150;
-                Log("Press " + ((ForenameValue + SurnameValue) > 150 ? "INNOCENT" : "GUILTY"));
+                IsInnocent = (ForenameValue + SurnameValue) < 150;
+                Log("Crime is Silliness: The sum of the letters (" + NameSum + ") is " + (IsInnocent ? "" : "not ") + "less than 150.");
                 break;
 
             case 1:
-                IsInnocent = ForenameValue > SurnameValue;
-                Log("Press " + (ForenameValue > SurnameValue ? "INNOCENT" : "GUILTY"));
-                Log((ForenameValue > SurnameValue).ToString());
+                IsInnocent = SurnameValue > ForenameValue;
+                Log("Crime is Tax Fraud: The surname value is " + (IsInnocent ? "" : "not ") + "greater than the forename value.");
                 break;
 
             case 2:
-                IsInnocent = SurnameValue > ForenameValue;
-                Log("Press " + (SurnameValue > ForenameValue ? "INNOCENT" : "GUILTY"));
-                Log((ForenameValue < SurnameValue).ToString());
+                IsInnocent = ForenameValue > SurnameValue;
+                Log("Crime is Dying: The forename value is " + (IsInnocent ? "" : "not ") + "greater than the surname value.");
                 break;
 
             case 3:
                 IsInnocent = StrikeChange;
-                Log("Number of Strikes has " + (StrikeChange ? "changed, this means you should press GUILTY" : "not changed, this means you should press INNOCENT"));
+                Log("Crime is Striking: The number of strikes has " + (IsInnocent ? "changed." : "not changed."));
                 break;
 
             case 4:
                 IsInnocent = SolvedModules > UnsolvedModules;
-                Log("The number of solved modules is " + SolvedModules + ". Press " + (IsInnocent ? "INNOCENT" : "GUILTY"));
+                Log("Crime is Solving: The number of solved modules is " + SolvedModules + ", and that is " + (IsInnocent ? "" : "not ") + "greater than " + UnsolvedModules + ".");
                 break;
 
             case 5:
-
-                IsInnocent = 115 < ((ForenameValue + SurnameValue) - NameLength);
-                Log("The sum of letters, subtract the length of the name is " + ((ForenameValue + SurnameValue) - Forenames[ChosenForename].Length - Surnames[ChosenSurname].Length) + ". Press " + (IsInnocent ? "INNOCENT" : "GUILTY"));
+                var length = Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length;
+                IsInnocent = (NameSum - length) < 115;
+                Log("Crime is Living: The sum of the letters (" + NameSum + ") minus the length of the forename and surname combined (" + length + ") is " + (NameSum - length) + ", which is " + (IsInnocent ? "" : "not ") + "less than 115.");
                 break;
 
             case 6:
-
-                IsInnocent = 750 < (Bomb.GetPortCount() * (ForenameValue + SurnameValue));
-                Log("Number of Ports * Sum of Letters is " + (IsInnocent ? "More than 750. Press INNOCENT." : "Less than 750. Press GUILTY"));
+                var ports = Bomb.GetPortCount();
+                IsInnocent = (NameSum * ports) < 750;
+                Log("Crime is Embezzlement: The sum of the letters (" + NameSum + ") times the number of ports on the bomb (" + ports + ") is " + (NameSum - ports) + ", which is " + (IsInnocent ? "" : "not ") + "less than 750.");
                 break;
 
             case 7:
-                
-                string o = (ForenameValue + SurnameValue).ToString();
-                
-                IsInnocent = o.Any(x => "97531".Contains(x));
-                Log("The sum of the letters contains " + (IsInnocent ? "an odd number. Press INNOCENT" : "no odd numbers. Press GUILTY"));
+                string numToStringOdd = NameSum.ToString();
+                IsInnocent = numToStringOdd.Any(x => "13579".Contains(x));
+                Log("Crime is Being Guilty: The sum of the letters (" + NameSum + ") " + (IsInnocent ? "contains at least one odd digit." : "does not contain any odd digits."));
                 break;
 
             case 8:
-                string e = (ForenameValue + SurnameValue).ToString();
-                IsInnocent = e.Any(x => "08642".Contains(x));
-                Log("The sum of the letters contains " + (IsInnocent ? "an even number. Press INNOCENT" : "no even numbers. Press GUILTY"));
+                string numToStringEven = NameSum.ToString();
+                IsInnocent = numToStringEven.Any(x => "02468".Contains(x));
+                Log("Crime is Handling Salmon: The sum of the letters (" + NameSum + ") " + (IsInnocent ? "contains at least one even digit." : "does not contain any even digits."));
                 break;
 
             case 9:
-                IsInnocent = 147 > (ForenameValue + SurnameValue);
-                Log(IsInnocent ? "The sum of all letters in the name is less than the sum of letters in MINOR LARCENY. Press INNOCENT" : "The sum of all letters in the name is more than the sum of letters in MINOR LARCENY. Press GUILTY.");
+                IsInnocent = NameSum >= 147;
+                Log("Crime is Minor Larceny: The sum of the letters (" + NameSum + ") is " + (IsInnocent ? "" : "not ") + "greater than or equal to 147 (the sum of the letters in MINOR LARCENY).");
                 break;
 
             case 10:
-                IsInnocent = ((ForenameValue + SurnameValue) * 11) > 1000;
-                Log(IsInnocent ? "Letters multiplied by 11 is more than 1000. Press INNOCENT" : "Letters multiplied by 11 is less than 1000. Press GUILTY");
+                IsInnocent = NameSum * 11 > 1000;
+                Log("Crime is {CRIME}: The sum of the letters (" + NameSum + ") times 11 is " + NameSum * 11 + ", which is " + (IsInnocent ? "" : "not ") + "greater than 1,000.");
                 break;
 
             case 11:
                 IsInnocent = Rnd.Range(0, 2) == 0;
                 if (IsInnocent)
                 {
-                    Audio.PlaySoundAtTransform("teleportingbread", transform);
-                    Log("The sound has played, press INNOCENT.");
+                    Audio.PlaySoundAtTransform("teleportingBread", transform);
+                    Log("Crime is Teleporting Bread: The sound played.");
                 }
                 else
                 {
-                    Log("The sound did not play, press GUILTY");
+                    Log("Crime is Teleporting Bread: The sound did not play.");
                 }
                 break;
 
         }
+        Log("Press " + (IsInnocent ? "INNOCENT." : "GUILTY."));
     }
 void ChangeStrikes(int Strikes)
     {
