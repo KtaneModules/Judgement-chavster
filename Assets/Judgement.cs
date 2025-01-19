@@ -19,15 +19,15 @@ partial class Judgement : MonoBehaviour
     private static string[] Forenames = { "Aidan", "Chav", "Zoe", "Deaf", "Blan", "Ghost", "Hazel", "Goober", "Jimmy", "Homer", "Saul", "Walter", "Jeremiah", "Jams", "Jo", "Johnny", "Dwayne", "Cave", "Burger", "Jerma", "Sans", "Jon", "Garfield", "Mega", "Cruel", "Cyanix", "Tim", "Bomby", "Edgework", "Complicated", "Jason", "Freddy", "Gaga", "Barry", "Mordecai", "Rigby", "Jesus", "Seymour", "Superintendent", "Kevin", "dicey", "User", "Eltrick", "Juniper", "David", "MAXANGE", "Emik" };
     private static string[] Surnames = { "Anas", "Salt", "Ster", "Blind", "Ante", "McBoatface", "McGooberson", "Neutron", "Simpleton", "Goodman", "White", "Clahkson", "Maie", "Hammock", "Ku", "Cage", "Johnson", "King", "Tron", "Serif", "Master", "Wi", "McBombface", "McEdgework", "Optimised", "Alfredo", "Voorhees", "Fazbear", "Oolala", "Benson", "Christ", "Skinner", "Lee", "Name", "Mitchell" };
     private static string[] Crimes = { "Silliness", "Tax Fraud", "Dying", "Striking", "Solving", "Living", "Embezzlement", "Being Guilty", "Handling Salmon", "Minor Larceny", "{CRIME}", "Teleporting Bread" };
-    private int ChosenForename;
-    private int ChosenSurname;
-    private int ChosenCrime;
+    private static int ChosenForename;
+    private static int ChosenSurname;
+    private static int ChosenCrime;
     private int KeypadInput = -1;
     private Coroutine[] KeypadAnimCoroutines;
     private Coroutine[] VerdictAnimCoroutines;
     public static int ForenameValue;
     public static int SurnameValue;
-    private static int NameSum;
+    public static int NameSum;
     static int ModuleIdCounter = 1;
     int ModuleId;
     private bool ModuleSolved;
@@ -235,7 +235,7 @@ partial class Judgement : MonoBehaviour
         }
         else
         {
-            displayMat.color = new Color32(2, 36, 3, 255); 
+            displayMat.color = new Color32(2, 36, 0, 255); 
         }
 
     }
