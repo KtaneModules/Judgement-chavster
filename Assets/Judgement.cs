@@ -66,12 +66,10 @@ partial class Judgement : MonoBehaviour
 
     void DisplayCase()
     {
-
-            DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
-            Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
-            DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
-            DisplayText.color = new Color32(102, 162, 38, 1);
-
+        DisplayText.text = "The Court accuses\n" + Forenames[ChosenForename] + " " + Surnames[ChosenSurname] + "\nof " + Crimes[ChosenCrime];
+        Log("" + (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length));
+        DisplayText.characterSize = (Forenames[ChosenForename].Length + Surnames[ChosenSurname].Length) >= 21 ? 1.0f : 1.35f;
+        DisplayText.color = new Color32(102, 162, 38, 1);
     }
 
     void KeypadPress(int pos)
@@ -97,9 +95,7 @@ partial class Judgement : MonoBehaviour
                 NameSum = 0;
                 StopCoroutine(ButtonAnim(Keypad[pos].transform, 0, -0.005f));
                 CrimeCalc();
-
             }
-
 
             else
             {
@@ -107,8 +103,6 @@ partial class Judgement : MonoBehaviour
                 KeypadInput = -1;
                 NumberText.text = "";
             }
-
-
         }
         else if (KeypadInput < 100)
         {
@@ -126,7 +120,6 @@ partial class Judgement : MonoBehaviour
                 KeypadInput = (KeypadInput * 10) + pressedNum;
             NumberText.text = KeypadInput.ToString();
         }
-
     }
 
     void VerdictPress(int pos)
@@ -143,7 +136,6 @@ partial class Judgement : MonoBehaviour
             }
             else
             {
-
                 Strike(pos, "You pressed " + (pos == 1 ? "INNOCENT " : "GUILTY ") + "which was incorrect. The module has now reset.");
                 NumberText.gameObject.SetActive(true);
                 DisplayCase();
