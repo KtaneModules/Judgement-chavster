@@ -12,7 +12,7 @@ partial class Judgement
         switch (ChosenCrime)
         {
             case 0:
-                IsInnocent = (ForenameValue + SurnameValue) < 150;
+                IsInnocent = (NameSum) < 150;
                 Log("Crime is Silliness: The sum of the letters (" + NameSum + ") is " + (IsInnocent ? "" : "not ") + "less than 150.");
                 break;
 
@@ -45,7 +45,7 @@ partial class Judgement
             case 6:
                 var ports = Bomb.GetPortCount();
                 IsInnocent = (NameSum * ports) < 750;
-                Log("Crime is Embezzlement: The sum of the letters (" + NameSum + ") times the number of ports on the bomb (" + ports + ") is " + (NameSum - ports) + ", which is " + (IsInnocent ? "" : "not ") + "less than 750.");
+                Log("Crime is Embezzlement: The sum of the letters (" + NameSum + ") times the number of ports on the bomb (" + ports + ") is " + (NameSum * ports) + ", which is " + (IsInnocent ? "" : "not ") + "less than 750.");
                 break;
 
             case 7:

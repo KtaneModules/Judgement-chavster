@@ -144,7 +144,7 @@ partial class Judgement : MonoBehaviour
             VerdictAnimCoroutines[pos] = StartCoroutine(ButtonAnim(VerdictPad[pos].transform, 0, -0.0075f));
             VerdictPad[pos].AddInteractionPunch();
 
-            if (!ModuleSolved)
+            if (!ModuleSolved && VerdictAccessible)
             {
                 if ((pos == 0 && !IsInnocent) || (pos == 1 && IsInnocent))
                 {
